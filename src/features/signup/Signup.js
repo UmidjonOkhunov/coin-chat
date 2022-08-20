@@ -1,20 +1,20 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import { ButtonBase, Link } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { routes } from "../../router/routes";
-import { login } from "./loginAPI";
+import { signup } from "./signupAPI";
 
 function Copyright(props) {
   return (
@@ -36,7 +36,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignUp() {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -44,16 +44,15 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
 
     try {
-      await login(data.get("username"), data.get("password"));
+      await signup(
+        data.get("public_key"),
+        data.get("username"),
+        data.get("password")
+      );
       navigate(routes.MESSAGES);
     } catch (error) {
-      console.log("Login Failed: ", error);
+      console.log("Sign-up Failed: ", error);
     }
-  };
-
-  const handleFortgotPassword = (event) => {
-    event.preventDefault();
-    console.log("forgot password");
   };
 
   return (
@@ -72,61 +71,77 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="text"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="public_key"
+                  label="Public Key"
+                  name="public_key"
+                  autoComplete="text"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="text"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="Verify your public key"
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <ButtonBase onClick={handleFortgotPassword}>
-                  Forgot password?
-                </ButtonBase>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <RouterLink to={routes.SIGNUP} variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <RouterLink to={routes.LOGIN} variant="body2">
+                  Already have an account? Sign in
                 </RouterLink>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

@@ -1,7 +1,7 @@
 // A mock function to mimic making an async request for data
-export function login(username, password) {
+export function signup(public_key, username, password) {
   return new Promise((resolve) => {
-    console.log("login request", username, password);
+    console.log("sign up request", public_key, username, password);
     setTimeout(() => resolve({ data: username }), 500);
   });
 }
