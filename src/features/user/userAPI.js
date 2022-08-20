@@ -19,14 +19,15 @@ export async function signupRequest(public_key, username, password) {
 
 export async function loginRequest(username, password) {
   console.log(username, password);
-  const response = await axios.post(
-    `${baseURL}/login`,
-    {
-      name: username,
-      password: password,
-    },
-    { headers }
-  );
+  // const response = await axios.post(
+  //   `${baseURL}/login`,
+  //   {
+  //     name: username,
+  //     password: password,
+  //   },
+  //   { headers }
+  // );
 
-  return response;
+  // return response;
+  return { userId: "userId" };
 }

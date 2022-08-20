@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ConversationList from "../ConversationList";
 import MessageList from "../MessageList";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
 import "./Messenger.css";
 
-export default function Messenger(props) {
+export default function Messenger({ conversations }) {
+  const [selectConvId, setSelectConvId] = useState(0);
+
+  useEffect(() => {
+    const lastConv = conversations[0]?.id || 0;
+    setSelectConvId(lastConv);
+  }, [conversations]);
+
+  const onSelectConv = (id) => {
+    setSelectConvId(id);
+  };
+
+  const messages = conversations.find((conv) => conv.id === selectConvId) || [];
+
   return (
     <div className="messenger">
       <Toolbar
@@ -29,11 +42,15 @@ export default function Messenger(props) {
       />
 
       <div className="scrollable sidebar">
-        <ConversationList />
+        <ConversationList
+          conversations={conversations}
+          selectConvId={selectConvId}
+          onSelectConv={onSelectConv}
+        />
       </div>
 
       <div className="scrollable content">
-        <MessageList />
+        <MessageList messages={messages} />
       </div>
     </div>
   );

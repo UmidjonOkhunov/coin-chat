@@ -14,8 +14,8 @@ const initialState = {
 export const getConversationsAsync = createAsyncThunk(
   "conversation/getConversations",
   async ({ userId, username }) => {
-    await getConversationsRequest(userId, username);
-    return { loggedIn: true, username };
+    const res = await getConversationsRequest(userId, username);
+    return { conversations: res.conversations };
   }
 );
 
