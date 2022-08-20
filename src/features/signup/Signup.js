@@ -14,7 +14,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { routes } from "../../router/routes";
-import { signup } from "./signupAPI";
+import { useSelector, useDispatch } from "react-redux";
+import { signupAsync } from "../user/userSlice";
 
 function Copyright(props) {
   return (
@@ -38,21 +39,28 @@ const theme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.user.loggedIn);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate(routes.CONVERSATIONS);
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    try {
-      await signup(
-        data.get("public_key"),
-        data.get("username"),
-        data.get("password")
-      );
-      navigate(routes.MESSAGES);
-    } catch (error) {
-      console.log("Sign-up Failed: ", error);
-    }
+    dispatch(
+      signupAsync({
+        public_key: data.get("public_key"),
+        username: data.get("username"),
+        password: data.get("password"),
+      })
+    )
+      .then(() => navigate(routes.CONVERSATIONS))
+      .catch((error) => console.log("Sign-up Failed: ", error));
   };
 
   return (

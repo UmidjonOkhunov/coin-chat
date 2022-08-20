@@ -1,5 +1,5 @@
 export const privateRoutes = {
-  MESSAGES: "/messages",
+  CONVERSATIONS: "/conversations",
 };
 
 export const routes = {

@@ -14,7 +14,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { routes } from "../../router/routes";
-import { login } from "./loginAPI";
+import { loginAsync } from "../user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -38,17 +39,27 @@ const theme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user.loggedIn);
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate(routes.CONVERSATIONS);
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    try {
-      await login(data.get("username"), data.get("password"));
-      navigate(routes.MESSAGES);
-    } catch (error) {
-      console.log("Login Failed: ", error);
-    }
+    dispatch(
+      loginAsync({
+        username: data.get("username"),
+        password: data.get("password"),
+      })
+    )
+      .then(() => navigate(routes.CONVERSATIONS))
+      .catch((error) => console.log("Login Failed: ", error));
   };
 
   const handleFortgotPassword = (event) => {
