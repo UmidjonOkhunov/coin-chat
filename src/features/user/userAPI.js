@@ -1,14 +1,32 @@
-export function signupRequest(public_key, username, password) {
-  return new Promise((resolve) => {
-    console.log("sign up request", public_key, username, password);
-    setTimeout(() => resolve({ data: username }), 500);
-  });
+import axios from "axios";
+
+const baseURL = "http://10.200.89.52:8080";
+const headers = { "Access-Control-Allow-Origin": ["*"] };
+
+export async function signupRequest(public_key, username, password) {
+  const response = await axios.post(
+    `${baseURL}/signup`,
+    {
+      name: username,
+      publicKey: public_key,
+      password: password,
+    },
+    { headers }
+  );
+
+  return response;
 }
 
-export function loginRequest(username, password) {
-  console.log("loginRequest", username, password);
-  return new Promise((resolve) => {
-    console.log("login request", username, password);
-    setTimeout(() => resolve({ data: username }), 500);
-  });
+export async function loginRequest(username, password) {
+  console.log(username, password);
+  const response = await axios.post(
+    `${baseURL}/login`,
+    {
+      name: username,
+      password: password,
+    },
+    { headers }
+  );
+
+  return response;
 }

@@ -4,6 +4,7 @@ import { loginRequest, signupRequest } from "./userAPI";
 const initialState = {
   loggedIn: false,
   username: "",
+  userId: "",
   status: "idle",
 };
 
@@ -15,16 +16,16 @@ const initialState = {
 export const loginAsync = createAsyncThunk(
   "user/login",
   async ({ username, password }) => {
-    await loginRequest(username, password);
-    return { loggedIn: true, username };
+    const res = await loginRequest(username, password);
+    return { loggedIn: true, username, userId: res.userId };
   }
 );
 
 export const signupAsync = createAsyncThunk(
   "user/signup",
   async ({ public_key, username, password }) => {
-    await signupRequest(public_key, username, password);
-    return { loggedIn: true, username };
+    const res = await signupRequest(public_key, username, password);
+    return { loggedIn: true, username, userId: res.userId };
   }
 );
 
@@ -36,6 +37,7 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.loggedIn = false;
       state.username = "";
+      state.userId = "";
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -50,6 +52,7 @@ export const userSlice = createSlice({
         console.log(action.payload);
         state.loggedIn = action.payload.loggedIn;
         state.username = action.payload.username;
+        state.userId = action.payload.userId;
       })
       .addCase(signupAsync.pending, (state) => {
         state.status = "loading";
@@ -59,6 +62,7 @@ export const userSlice = createSlice({
         console.log(action.payload);
         state.loggedIn = action.payload.loggedIn;
         state.username = action.payload.username;
+        state.userId = action.payload.userId;
       });
   },
 });
