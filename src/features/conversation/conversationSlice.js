@@ -19,6 +19,20 @@ export const getConversationsAsync = createAsyncThunk(
   }
 );
 
+export const postConversationAsync = createAsyncThunk(
+  "conversation/postConversation",
+  async ({ userId, username, receipientName, receipientId, message }) => {
+    const res = await getConversationsRequest(
+      userId,
+      username,
+      receipientName,
+      receipientId,
+      message
+    );
+    return { conversations: res.conversations };
+  }
+);
+
 export const userSlice = createSlice({
   name: "conversation",
   initialState,
@@ -32,6 +46,13 @@ export const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getConversationsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.conversations = action.payload.conversations;
+      })
+      .addCase(postConversationAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(postConversationAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.conversations = action.payload.conversations;
       });
