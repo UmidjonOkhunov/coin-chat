@@ -13,8 +13,8 @@ export async function signupRequest(public_key, username, password) {
     },
     { headers }
   );
-
-  return response;
+  
+  return response.data;
 }
 
 export async function loginRequest(username, password) {
@@ -28,5 +28,5 @@ export async function loginRequest(username, password) {
     { headers }
   );
 
-  return response;
+  return response.data;
 }

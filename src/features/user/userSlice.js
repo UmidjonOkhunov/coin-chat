@@ -17,7 +17,7 @@ export const loginAsync = createAsyncThunk(
   "user/login",
   async ({ username, password }) => {
     const res = await loginRequest(username, password);
-    return { loggedIn: true, username, userId: res.userId };
+    return { loggedIn: true, username, userId: res.id };
   }
 );
 
@@ -25,7 +25,7 @@ export const signupAsync = createAsyncThunk(
   "user/signup",
   async ({ public_key, username, password }) => {
     const res = await signupRequest(public_key, username, password);
-    return { loggedIn: true, username, userId: res.userId };
+    return { loggedIn: true, username, userId: res.id };
   }
 );
 
