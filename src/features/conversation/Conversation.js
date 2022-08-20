@@ -1,23 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
-  selectConv,
+  selectConversations,
+  getConversationsAsync,
 } from "./conversationSlice";
-import styles from "./Conversation.module.css";
 import { routes } from "../../router/routes";
 import { useNavigate } from "react-router-dom";
+import Messenger from "../../components/Messenger";
 
 export function Conversation() {
-  const count = useSelector(selectConv);
+  const conversations = useSelector(selectConversations);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.loggedIn);
+
+  useEffect(() => {
+    dispatch(getConversationsAsync());
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (!isLoggedIn) {
@@ -27,7 +27,7 @@ export function Conversation() {
 
   return (
     <div>
-      <h1> Conversations</h1>
+      <Messenger />
     </div>
   );
 }
