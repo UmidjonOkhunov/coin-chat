@@ -6,15 +6,24 @@ import Signup from "./features/signup/Signup";
 import { routes } from "./router/routes";
 import "./App.css";
 import { Conversation } from "./features/conversation/Conversation";
+import { Button } from "@mui/material";
+import { logout } from "./features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user.loggedIn);
+
   return (
     <div className="App">
       {location.pathname !== routes.HOME && <Link to={routes.HOME}> Home</Link>}
-      <Link to={routes.LOGIN}> Login</Link>
-      {location.pathname !== routes.CONVERSATIONS && (
+      {isLoggedIn || <Link to={routes.LOGIN}> Login</Link>}
+      {isLoggedIn && location.pathname !== routes.CONVERSATIONS && (
         <Link to={routes.CONVERSATIONS}> Conversations</Link>
+      )}
+      {isLoggedIn && (
+        <Button onClick={() => dispatch(logout())}> Logout </Button>
       )}
       <Routes>
         <Route
