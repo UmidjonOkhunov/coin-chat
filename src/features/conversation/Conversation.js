@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectConversations,
+  // selectConversations,
   getConversationsAsync,
 } from "./conversationSlice";
 import { routes } from "../../router/routes";
@@ -9,15 +9,19 @@ import { useNavigate } from "react-router-dom";
 import Messenger from "../../components/Messenger";
 
 export function Conversation() {
-  const conversations = useSelector(selectConversations);
+  const conversations = useSelector(
+    (state) => state.conversation.conversations
+  );
+  // const conversations = useSelector(selectConversations);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state) => state.user.loggedIn);
+  const userState = useSelector((state) => state.user);
+  const isLoggedIn = userState.loggedIn;
 
   useEffect(() => {
-    dispatch(getConversationsAsync());
-  }, [dispatch]);
+    dispatch(getConversationsAsync(userState.userId, userState.username));
+  }, [dispatch, userState.userId, userState.username]);
 
   React.useEffect(() => {
     if (!isLoggedIn) {
@@ -27,7 +31,7 @@ export function Conversation() {
 
   return (
     <div>
-      <Messenger />
+      <Messenger conversations={conversations} />
     </div>
   );
 }
