@@ -17,7 +17,8 @@ export default function Messenger({ conversations }) {
     setSelectConvId(id);
   };
 
-  const messages = conversations.find((conv) => conv.id === selectConvId) || [];
+  const messages =
+    conversations.find((conv) => conv.id === selectConvId)?.messages || [];
 
   return (
     <div className="messenger">

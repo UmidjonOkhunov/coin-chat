@@ -13,19 +13,21 @@ export async function signupRequest(public_key, username, password) {
     },
     { headers }
   );
-  
-  return response.data;
+
+  return response;
 }
 
 export async function loginRequest(username, password) {
-  const response = await axios.post(
-    `${baseURL}/login`,
-    {
-      name: username,
-      password: password,
-    },
-    { headers }
-  );
+  console.log(username, password);
+  // const response = await axios.post(
+  //   `${baseURL}/login`,
+  //   {
+  //     name: username,
+  //     password: password,
+  //   },
+  //   { headers }
+  // );
 
-  return response.data;
+  // return response;
+  return { id: 1 };
 }

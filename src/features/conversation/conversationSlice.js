@@ -33,7 +33,6 @@ export const userSlice = createSlice({
       })
       .addCase(getConversationsAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        console.log(action.payload);
         state.conversations = action.payload.conversations;
       });
   },

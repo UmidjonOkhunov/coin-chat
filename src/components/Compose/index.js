@@ -1,18 +1,29 @@
-import React from 'react';
-import './Compose.css';
+import React, { useStates } from "react";
+// import { Box } from "@mui/material";
+import "./Compose.css";
 
 export default function Compose(props) {
-    return (
-      <div className="compose">
-        <input
-          type="text"
-          className="compose-input"
-          placeholder="Type a message, @name"
-        />
+  // const [text, setText] = useStates("");
+  // const handleSubmit = () => {
+  //   console.log("submit");
+  // };
+  return (
+    <div className="compose">
+      {/* <Box
+        component="form"
+        onSubmit={handleSubmit}
+        noValidate
+        sx={{ width: "100%" }}
+      > */}
+      <input
+        type="text"
+        className="compose-input"
+        placeholder="Type a message, @name"
+        // onSubmit={handleSubmit}
+      />
 
-        {
-          props.rightItems
-        }
-      </div>
-    );
+      {props.rightItems}
+      {/* </Box> */}
+    </div>
+  );
 }

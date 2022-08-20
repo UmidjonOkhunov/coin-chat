@@ -9,14 +9,12 @@ import "./MessageList.css";
 import { useSelector } from "react-redux";
 
 export default function MessageList({ messages }) {
-  console.log(messages);
   const userId = useSelector((state) => state.user.userId);
-
   const renderMessages = () => {
     let i = 0;
     let messageCount = messages.length;
     let tempMessages = [];
-
+    // console.log("messages: ", messages);
     while (i < messageCount) {
       let previous = messages[i - 1];
       let current = messages[i];
