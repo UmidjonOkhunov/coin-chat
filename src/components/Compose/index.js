@@ -23,6 +23,7 @@ export default function Compose(props) {
           message: text,
         })
       );
+      setText("");
     } catch (err) {
       console.log(err);
     }
