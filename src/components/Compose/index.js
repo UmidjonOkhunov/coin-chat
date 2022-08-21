@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postConversationAsync } from "../../features/conversation/conversationSlice";
-// import { Box } from "@mui/material";
 import "./Compose.css";
 
 export default function Compose(props) {
   const [text, setText] = useState("");
   const dispatch = useDispatch();
+  const { userId, username } = useSelector((state) => state.user);
+
+  const { receiverId, receiverName } = props;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log("submit");
-    dispatch(postConversationAsync());
+    console.log("submit", userId, username, receiverId, receiverName, text);
+    dispatch(
+      postConversationAsync({
+        userId,
+        username,
+        receiverId,
+        receiverName,
+        text,
+      })
+    );
   };
   const onChange = (evt) => {
     setText(evt.target.value);

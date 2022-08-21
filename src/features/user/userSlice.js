@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginRequest, signupRequest } from "./userAPI";
+import { authKey, loginRequest, signupRequest } from "./userAPI";
 
 const initialState = {
   loggedIn: false,
   username: "",
   userId: "",
+  public_key: "",
+  authStatus: false,
   status: "idle",
 };
 
@@ -28,6 +30,11 @@ export const signupAsync = createAsyncThunk(
     return { loggedIn: true, username, userId: res.id };
   }
 );
+
+export const authAsync = createAsyncThunk("user/auth", async () => {
+  const res = await authKey();
+  return { public_key: res.address };
+});
 
 export const userSlice = createSlice({
   name: "user",
@@ -63,6 +70,14 @@ export const userSlice = createSlice({
         state.loggedIn = action.payload.loggedIn;
         state.username = action.payload.username;
         state.userId = action.payload.userId;
+      })
+      .addCase(authAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(authAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.authStatus = true;
+        state.public_key = action.payload.public_key;
       });
   },
 });

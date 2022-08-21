@@ -10,6 +10,18 @@ import { useSelector } from "react-redux";
 
 export default function MessageList({ messages }) {
   const userId = useSelector((state) => state.user.userId);
+
+  const oneMessage =
+    messages.length > 0
+      ? messages[0]
+      : { receiverId: "", receiverName: "", senderId: "", senderName: "" };
+  const { receiverId, receiverName } =
+    oneMessage.senderId === userId
+      ? oneMessage
+      : {
+          receiverId: oneMessage.senderId,
+          receiverName: oneMessage.senderName,
+        };
   const renderMessages = () => {
     let i = 0;
     let messageCount = messages.length;
@@ -88,6 +100,8 @@ export default function MessageList({ messages }) {
       <div className="message-list-container">{renderMessages()}</div>
 
       <Compose
+        receiverId={receiverId}
+        receiverName={receiverName}
         rightItems={[
           <ToolbarButton key="photo" icon="ion-ios-camera" />,
           <ToolbarButton key="image" icon="ion-ios-image" />,

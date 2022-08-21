@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { routes } from "../../router/routes";
 import { useSelector, useDispatch } from "react-redux";
-import { signupAsync } from "../user/userSlice";
+import { signupAsync, authAsync } from "../user/userSlice";
 
 function Copyright(props) {
   return (
@@ -40,6 +40,8 @@ const theme = createTheme();
 export default function SignUp() {
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.loggedIn);
+  const isAuth = useSelector((state) => state.user.authStatus);
+  const public_key = useSelector((state) => state.user.public_key);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -98,6 +100,7 @@ export default function SignUp() {
                   name="public_key"
                   autoComplete="text"
                   autoFocus
+                  value={public_key}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -125,8 +128,15 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
+                  onClick={() => {
+                    dispatch(authAsync());
+                  }}
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox
+                      value="allowExtraEmails"
+                      color="primary"
+                      checked={isAuth}
+                    />
                   }
                   label="Verify your public key"
                 />

@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getConversationsRequest } from "./conversationAPI";
+import {
+  getConversationsRequest,
+  postConversationRequest,
+} from "./conversationAPI";
 
 const initialState = {
   conversations: [],
@@ -15,14 +18,16 @@ export const getConversationsAsync = createAsyncThunk(
   "conversation/getConversations",
   async ({ userId, username }) => {
     const res = await getConversationsRequest(userId, username);
-    return { conversations: res.conversations };
+    console.log(JSON.stringify(res));
+    return { conversations: res };
   }
 );
 
 export const postConversationAsync = createAsyncThunk(
   "conversation/postConversation",
   async ({ userId, username, receipientName, receipientId, message }) => {
-    const res = await getConversationsRequest(
+    console.log("partly", userId, username);
+    const res = await postConversationRequest(
       userId,
       username,
       receipientName,

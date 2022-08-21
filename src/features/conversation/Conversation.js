@@ -20,7 +20,16 @@ export function Conversation() {
   const isLoggedIn = userState.loggedIn;
 
   useEffect(() => {
-    dispatch(getConversationsAsync(userState.userId, userState.username));
+    try {
+      dispatch(
+        getConversationsAsync({
+          userId: userState.userId,
+          username: userState.username,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }, [dispatch, userState.userId, userState.username]);
 
   React.useEffect(() => {
