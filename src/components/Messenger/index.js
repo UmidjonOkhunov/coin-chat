@@ -15,7 +15,7 @@ export default function Messenger({ conversations }) {
   const [selectConvId, setSelectConvId] = useState(0);
 
   useEffect(() => {
-    const lastConv = conversations[0]?.id || 0;
+    const lastConv = conversations.length > 0 ? conversations[0]?.id : 0;
     setSelectConvId(lastConv);
   }, [conversations]);
 

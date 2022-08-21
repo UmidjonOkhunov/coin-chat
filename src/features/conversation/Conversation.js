@@ -18,19 +18,37 @@ export function Conversation() {
   const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const isLoggedIn = userState.loggedIn;
+  const onSearch = useSelector((state) => state.conversation.onSearch);
 
   useEffect(() => {
-    try {
-      dispatch(
-        getConversationsAsync({
-          userId: userState.userId,
-          username: userState.username,
-        })
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }, [dispatch, userState.userId, userState.username]);
+    // try {
+    //   dispatch(
+    //     getConversationsAsync({
+    //       userId: userState.userId,
+    //       username: userState.username,
+    //     })
+    //   );
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    const id = setInterval(() => {
+      try {
+        if (onSearch) return;
+        dispatch(
+          getConversationsAsync({
+            userId: userState.userId,
+            username: userState.username,
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, [dispatch, userState.userId, userState.username, onSearch]);
 
   React.useEffect(() => {
     if (!isLoggedIn) {

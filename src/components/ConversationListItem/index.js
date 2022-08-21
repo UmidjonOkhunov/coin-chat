@@ -6,9 +6,12 @@ import "./ConversationListItem.css";
 export default function ConversationListItem(props) {
   const username = useSelector((state) => state.user.username);
   const { messages } = props.data;
-  const { senderName, receiverName } = messages[0];
+  const lastMessage = messages && messages.length > 0 ? messages[0] : undefined;
+  const { senderName, receiverName } = lastMessage || {
+    senderName: "",
+    receiverName: "",
+  };
   const convName = senderName === username ? receiverName : senderName;
-  const lastMessage = messages[messages.length - 1].message;
 
   return (
     <div
@@ -22,7 +25,7 @@ export default function ConversationListItem(props) {
       <img className="conversation-photo" src={CorgiImg} alt="c" />
       <div className="conversation-info">
         <h1 className="conversation-title">{convName}</h1>
-        <p className="conversation-snippet">{lastMessage}</p>
+        <p className="conversation-snippet">{lastMessage?.message}</p>
       </div>
     </div>
   );

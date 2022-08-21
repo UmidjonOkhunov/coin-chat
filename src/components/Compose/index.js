@@ -13,15 +13,19 @@ export default function Compose(props) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     console.log("submit", userId, username, receiverId, receiverName, text);
-    dispatch(
-      postConversationAsync({
-        userId,
-        username,
-        receiverId,
-        receiverName,
-        text,
-      })
-    );
+    try {
+      dispatch(
+        postConversationAsync({
+          userId,
+          username,
+          receiverId,
+          receiverName,
+          message: text,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
   const onChange = (evt) => {
     setText(evt.target.value);

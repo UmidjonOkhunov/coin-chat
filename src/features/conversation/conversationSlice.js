@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getConversationsRequest,
   postConversationRequest,
+  searchConversationRequest,
 } from "./conversationAPI";
 
 const initialState = {
   conversations: [],
   status: "idle",
+  onSearch: false,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -18,23 +20,52 @@ export const getConversationsAsync = createAsyncThunk(
   "conversation/getConversations",
   async ({ userId, username }) => {
     const res = await getConversationsRequest(userId, username);
-    console.log(JSON.stringify(res));
+    console.log(res);
     return { conversations: res };
   }
 );
 
 export const postConversationAsync = createAsyncThunk(
   "conversation/postConversation",
-  async ({ userId, username, receipientName, receipientId, message }) => {
+  async ({ userId, username, receiverName, receiverId, message }) => {
     console.log("partly", userId, username);
-    const res = await postConversationRequest(
+    const _ = await postConversationRequest(
       userId,
       username,
-      receipientName,
-      receipientId,
+      receiverName,
+      receiverId,
       message
     );
+
+    const res = await getConversationsRequest(userId, username);
+    console.log(res);
+
     return { conversations: res };
+  }
+);
+
+export const searchConversationAsync = createAsyncThunk(
+  "conversation/searchConversation",
+  async ({ public_key, userId, username }) => {
+    console.log("searchConversation", public_key);
+    const res = await searchConversationRequest(public_key);
+
+    const newConv = {
+      id: 1,
+      messages: [
+        {
+          id: 1,
+          senderId: userId,
+          senderName: username,
+          receiverId: res.id,
+          receiverName: res.name,
+          message: "Connected",
+          createdAt: new Date().getTime(),
+        },
+      ],
+    };
+
+    return { newConv: newConv };
   }
 );
 
@@ -52,6 +83,7 @@ export const userSlice = createSlice({
       })
       .addCase(getConversationsAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        state.onSearch = false;
         state.conversations = action.payload.conversations;
       })
       .addCase(postConversationAsync.pending, (state) => {
@@ -59,7 +91,23 @@ export const userSlice = createSlice({
       })
       .addCase(postConversationAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        state.onSearch = false;
         state.conversations = action.payload.conversations;
+        console.log(action.payload.conversations);
+      })
+      .addCase(searchConversationAsync.pending, (state) => {
+        state.status = "loading";
+        state.onSearch = true;
+      })
+      .addCase(searchConversationAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.onSearch = true;
+        state.conversations = state.conversations.concat([
+          action.payload.newConv,
+        ]);
+        // state.receiverId = action.payload.receiverId;
+        // state.receiverName = action.payload.receiverName;
+        console.log(action.payload.newConv);
       });
   },
 });

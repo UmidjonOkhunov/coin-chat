@@ -1,5 +1,4 @@
 import axios from "axios";
-import { conversations as conversationDb } from "./dummyData";
 
 const baseURL = "http://10.200.89.52:8080";
 const headers = { "Access-Control-Allow-Origin": "*" };
@@ -29,8 +28,6 @@ export async function postConversationRequest(
   receiverId,
   message
 ) {
-  // Save the message in the server
-
   const response = await axios.post(
     `${baseURL}/newmessage`,
     {
@@ -43,23 +40,15 @@ export async function postConversationRequest(
     { headers }
   );
   return response.data.message;
+}
 
-  // Dummy
-  // const maxId = conversationDb.reduce((mid, conv) => Math.max(mid, conv.id), 0);
-
-  // const conversation = {
-  //   id: maxId + 1,
-  //   senderId: userId,
-  //   senderName: username,
-  //   receiverName: receiverName,
-  //   receiverId: receiverId,
-  //   message: message,
-  //   createdAt: new Date().getTime(),
-  // };
-  // console.log("add", conversation);
-  // return new Promise((resolve) =>
-  //   resolve({
-  //     conversations: conversationDb.concat([conversation]).reverse(),
-  //   })
-  // );
+export async function searchConversationRequest(public_key) {
+  const response = await axios.post(
+    `${baseURL}/search`,
+    {
+      publicKey: public_key,
+    },
+    { headers }
+  );
+  return response.data;
 }
