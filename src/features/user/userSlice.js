@@ -66,7 +66,7 @@ export const userSlice = createSlice({
       })
       .addCase(signupAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        console.log(action.payload);
+        console.log("payload", action.payload);
         state.loggedIn = action.payload.loggedIn;
         state.username = action.payload.username;
         state.userId = action.payload.userId;

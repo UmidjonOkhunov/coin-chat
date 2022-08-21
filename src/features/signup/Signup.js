@@ -43,6 +43,8 @@ export default function SignUp() {
   const isAuth = useSelector((state) => state.user.authStatus);
   const public_key = useSelector((state) => state.user.public_key);
   const dispatch = useDispatch();
+  const [verified, setVerified] = React.useState(false);
+  const [key, setKey] = React.useState("");
 
   React.useEffect(() => {
     if (isLoggedIn) {
@@ -50,19 +52,31 @@ export default function SignUp() {
     }
   }, [isLoggedIn, navigate]);
 
+  React.useEffect(() => {
+    setVerified(isAuth);
+  }, [isAuth]);
+
+  React.useEffect(() => {
+    setKey(public_key);
+  }, [public_key]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    dispatch(
-      signupAsync({
-        public_key: data.get("public_key"),
-        username: data.get("username"),
-        password: data.get("password"),
-      })
-    )
-      .then(() => navigate(routes.CONVERSATIONS))
-      .catch((error) => console.log("Sign-up Failed: ", error));
+    try {
+      await dispatch(
+        signupAsync({
+          public_key: data.get("public_key"),
+          username: data.get("username"),
+          password: data.get("password"),
+        })
+      );
+      navigate(routes.CONVERSATIONS);
+    } catch (err) {
+      console.log("Sign-up Failed: ", err);
+      navigate(routes.LOGIN);
+    }
   };
 
   return (
@@ -100,7 +114,10 @@ export default function SignUp() {
                   name="public_key"
                   autoComplete="text"
                   autoFocus
-                  value={public_key}
+                  value={key}
+                  onChange={(evt) => {
+                    setKey(evt.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -135,7 +152,10 @@ export default function SignUp() {
                     <Checkbox
                       value="allowExtraEmails"
                       color="primary"
-                      checked={isAuth}
+                      checked={verified}
+                      onClick={() => {
+                        setVerified(!verified);
+                      }}
                     />
                   }
                   label="Verify your public key"

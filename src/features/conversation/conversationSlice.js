@@ -34,7 +34,7 @@ export const postConversationAsync = createAsyncThunk(
       receipientId,
       message
     );
-    return { conversations: res.conversations };
+    return { conversations: res };
   }
 );
 

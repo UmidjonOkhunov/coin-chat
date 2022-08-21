@@ -11,17 +11,10 @@ export async function signupRequest(public_key, username, password) {
     publicKey: public_key,
     password: password,
   });
-
-  const auth = await Authentication(public_key);
-
-  if (!auth) {
-    throw new Error("Invalid public key");
-  }
-
   return { id: response.data.id };
 }
 
-export async function authKey(public_key, username, password) {
+export async function authKey(public_key) {
   const auth = await Authentication(public_key);
 
   if (!auth) {
