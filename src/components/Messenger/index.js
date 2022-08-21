@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import ConversationList from "../ConversationList";
 import MessageList from "../MessageList";
 import Toolbar from "../Toolbar";
-import ToolbarButton from "../ToolbarButton";
+import { 
+  IoIosCog, 
+  IoIosAddCircleOutline, 
+  IoIosVideocam,
+  IoIosCall,
+  IoIosInformationCircleOutline,
+} from "react-icons/io";
 import "./Messenger.css";
 
 export default function Messenger({ conversations }) {
@@ -24,21 +30,18 @@ export default function Messenger({ conversations }) {
     <div className="messenger">
       <Toolbar
         title="Messenger"
-        leftItems={[<ToolbarButton key="cog" icon="ion-ios-cog" />]}
+        leftItems={[<IoIosCog size={'2em'} color={'blue'}/>]}
         rightItems={[
-          <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />,
+          <IoIosAddCircleOutline size={'2em'} color={'blue'}/>,
         ]}
       />
 
       <Toolbar
-        title="Conversation Title"
+        // title="Conversation Title"
         rightItems={[
-          <ToolbarButton
-            key="info"
-            icon="ion-ios-information-circle-outline"
-          />,
-          <ToolbarButton key="video" icon="ion-ios-videocam" />,
-          <ToolbarButton key="phone" icon="ion-ios-call" />,
+          <IoIosInformationCircleOutline size={'2em'} color={'blue'} />,
+          <IoIosVideocam size={'2em'} color={'blue'} />,
+          <IoIosCall size={'2em'} color={'blue'} />,
         ]}
       />
 
