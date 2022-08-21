@@ -7,7 +7,7 @@
   border-bottom: 1px solid #eeeef1;
 
   position: sticky;
-  top: 0px;
+  top: 8px;
 }
 
 @supports (backdrop-filter: blur(20px)) {
@@ -24,7 +24,8 @@
   font-weight: 800;
 }
 
-.left-items, .right-items {
+.left-items,
+.right-items {
   flex: 1;
   padding: 10px;
   display: flex;

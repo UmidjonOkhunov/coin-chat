@@ -43,7 +43,6 @@ export default function SignUp() {
   const isAuth = useSelector((state) => state.user.authStatus);
   const public_key = useSelector((state) => state.user.public_key);
   const dispatch = useDispatch();
-  const [verified, setVerified] = React.useState(false);
   const [key, setKey] = React.useState("");
 
   React.useEffect(() => {
@@ -51,10 +50,6 @@ export default function SignUp() {
       navigate(routes.CONVERSATIONS);
     }
   }, [isLoggedIn, navigate]);
-
-  React.useEffect(() => {
-    setVerified(isAuth);
-  }, [isAuth]);
 
   React.useEffect(() => {
     setKey(public_key);
@@ -121,6 +116,21 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <FormControlLabel
+                  onClick={() => {
+                    dispatch(authAsync());
+                  }}
+                  control={
+                    <Checkbox
+                      value="allowExtraEmails"
+                      color="primary"
+                      checked={isAuth}
+                    />
+                  }
+                  label="Verify your public key"
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   margin="normal"
                   required
@@ -130,6 +140,7 @@ export default function SignUp() {
                   name="username"
                   autoComplete="text"
                   autoFocus
+                  disabled={!isAuth}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,24 +152,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  onClick={() => {
-                    dispatch(authAsync());
-                  }}
-                  control={
-                    <Checkbox
-                      value="allowExtraEmails"
-                      color="primary"
-                      checked={verified}
-                      onClick={() => {
-                        setVerified(!verified);
-                      }}
-                    />
-                  }
-                  label="Verify your public key"
+                  disabled={!isAuth}
                 />
               </Grid>
             </Grid>
@@ -167,6 +161,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={!isAuth}
             >
               Sign Up
             </Button>
