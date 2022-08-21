@@ -1,14 +1,14 @@
 async function connect() {
-  if (!window.ethereum) {
-    alert("Get MetaMask!");
+  if (!window.keplr) {
+    alert("Pls install keplr extension and register your wallet!");
     return false;
   }
 
-  const accounts = await window.ethereum.request({
-    method: "eth_requestAccounts",
-  });
-
-  return accounts[0];
+  const chainId = "cosmoshub-4";
+  await window.keplr.enable(chainId);
+  const offlineSigner = window.keplr.getOfflineSigner(chainId);
+  const accounts = await offlineSigner.getAccounts();  
+  return accounts[0].address;
 }
 
 export default function Authentication(givenPublicAddress) {
