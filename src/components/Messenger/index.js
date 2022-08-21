@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ConversationList from "../ConversationList";
 import MessageList from "../MessageList";
-import Toolbar from "../Toolbar";
-import { 
-  IoIosCog, 
-  IoIosAddCircleOutline, 
-  IoIosVideocam,
-  IoIosCall,
-  IoIosInformationCircleOutline,
-} from "react-icons/io";
 import "./Messenger.css";
 
 export default function Messenger({ conversations }) {
@@ -28,23 +20,6 @@ export default function Messenger({ conversations }) {
 
   return (
     <div className="messenger">
-      <Toolbar
-        title="Messenger"
-        leftItems={[<IoIosCog size={'2em'} color={'blue'}/>]}
-        rightItems={[
-          <IoIosAddCircleOutline size={'2em'} color={'blue'}/>,
-        ]}
-      />
-
-      <Toolbar
-        // title="Conversation Title"
-        rightItems={[
-          <IoIosInformationCircleOutline size={'2em'} color={'blue'} />,
-          <IoIosVideocam size={'2em'} color={'blue'} />,
-          <IoIosCall size={'2em'} color={'blue'} />,
-        ]}
-      />
-
       <div className="scrollable sidebar">
         <ConversationList
           conversations={conversations}

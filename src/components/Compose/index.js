@@ -33,7 +33,11 @@ export default function Compose(props) {
   };
   return (
     <div className="compose">
-      <form onSubmit={handleSubmit} styles={{ minWidth: "100%" }}>
+      <form
+        onSubmit={handleSubmit}
+        styles={{ minWidth: "100%" }}
+        className="compose"
+      >
         <input
           type="text"
           value={text}
